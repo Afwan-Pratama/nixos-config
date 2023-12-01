@@ -126,6 +126,8 @@
 
   programs.dconf.enable = true;
 
+  services.fstrim.enable = lib.mkDefault true;
+
   # To install it globally
   environment.systemPackages = [
     pkgs.git
