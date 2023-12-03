@@ -15,6 +15,8 @@
     ./neovim
     ./scripts
     ./wofi
+    ./stylix
+    ./firefox
   ];
 
   nixpkgs = {
@@ -48,7 +50,6 @@
   # Add stuff for your user as you see fit:
   home.packages = with pkgs; [
     steam
-    firefox
     spotify
     cargo
     gcc13
@@ -57,6 +58,11 @@
     unzip
     easyeffects
     keepassxc
+    pavucontrol
+    playerctl
+    webcord-vencord
+    gnome.nautilus
+    gnome.gnome-disk-utility
   ];
 
   # Enable home-manager and git
@@ -68,6 +74,6 @@
   systemd.user.startServices = "sd-switch";
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-  home.stateVersion = "23.05";
+  home.stateVersion = "23.11";
 
 }

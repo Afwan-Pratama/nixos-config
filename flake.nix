@@ -12,12 +12,25 @@
     # TODO: Add any other flake you might need
     # hardware.url = "github:nixos/nixos-hardware";
 
+    # hyprland.url = "github:hyprwm/Hyprland";
+
     aagl.url = "github:ezKEa/aagl-gtk-on-nix";
     aagl.inputs.nixpkgs.follows = "nixpkgs";
 
+    firefox-addons = {
+      url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nix-index-database.url = "github:Mic92/nix-index-database";
+    nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
+
+    stylix.url = "github:danth/stylix";
+
   };
 
-  outputs = { self, nixpkgs, home-manager, aagl, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, aagl, nix-index-database, stylix, ...
+    }@inputs:
     let inherit (self) outputs;
     in {
       # NixOS configuration entrypoint
@@ -47,7 +60,11 @@
             nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
           # > Our main home-manager configuration file <
-          modules = [ ./home-manager/home.nix ];
+          modules = [
+            ./home-manager/home.nix
+            nix-index-database.hmModules.nix-index
+            stylix.homeManagerModules.stylix
+          ];
         };
       };
     };

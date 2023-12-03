@@ -1,10 +1,17 @@
 { inputs, lib, config, pkgs, ... }: {
 
-  home.packages = with pkgs; [ mpvpaper hyprpaper hyprshot dex udiskie ];
+  home.packages = with pkgs; [ mpvpaper hyprpaper hyprshot ];
+
+  home.file.".config/hypr/hyprpaper.conf".text = ''
+    preload = ~/.config/hypr/wallpaper/bg.png
+
+    wallpaper = HDMI-A-1,~/.config/hypr/wallpaper/bg.png
+  '';
 
   wayland.windowManager.hyprland = {
     enable = true;
     xwayland.enable = true;
+    enableNvidiaPatches = true;
     settings = {
       general = {
         gaps_in = 7;
@@ -30,7 +37,7 @@
         ];
       };
 
-      "$mod" = "ALT";
+      "$mod" = "SUPER";
 
       bind = [
         ## apps
@@ -115,15 +122,17 @@
         };
       };
       env = [
+        "LIBVA_DRIVER_NAME,nvidia"
+        "XDG_SESSION_TYPE,wayland"
+        "GBM_BACKEND,nvidia-drm"
+        "__GLX_VENDOR_LIBRARY_NAME,nvidia"
         "MOZ_ENABLE_WAYLAND,1"
-        "QT_QPA_PLATFORM,qt5ct"
         "WLR_NO_HARDWARE_CURSORS,1"
         "XCURSROR_SIZE,28"
       ];
       exec-once = [
+        "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
         "toggleWallpaper"
-        "udiskie"
-        "dex -a -s ~/.config/autostart"
         "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
         "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
       ];
@@ -151,8 +160,7 @@
         "workspace 4,^(moe.launcher.the-honkers-railway-launcher)$"
         "workspace 7,^(thunderbird)$"
         "workspace 8 silent,^(WebCord)$"
-        "float,^(org.kde.polkit-kde-authentication-agent-1)$"
-        "float,^(pavucontrol-qt)$"
+        "float,^(pavucontrol)$"
         "float,^(moe.launcher.the-honkers-railway-launcher)$"
         "float,^(com.github.wwmm.easyeffects)$"
         "float,^(Spotify)$"

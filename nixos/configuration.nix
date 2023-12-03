@@ -8,6 +8,7 @@
     # inputs.hardware.nixosModules.common-ssd
 
     # You can also split up your configuration and import pieces of it here:
+    ./amd
     ./network
     ./fonts
     ./sound
@@ -15,6 +16,9 @@
     ./kernel
     ./nvidia
     ./users
+    ./hyprland
+    ./sddm
+    ./security
 
     # Import your generated (nixos-generate-config) hardware configuration
     ./hardware-configuration.nix
@@ -59,10 +63,6 @@
     # Deduplicate and optimize nix store
     auto-optimise-store = true;
 
-    substituters = [ "https://ezkea.cachix.org" ];
-    trusted-public-keys =
-      [ "ezkea.cachix.org-1:ioBmUbJTZIKsHmWWXPe1FSFbeVe+afhfgqgTSNd34eI=" ];
-
   };
 
   # FIXME: Add the rest of your current configuration
@@ -88,53 +88,20 @@
     LC_TIME = "en_US.UTF-8";
   };
 
-  # Enable the X11 windowing system.
-  services.xserver = {
-    enable = true;
-    displayManager.sddm = {
-      enable = true;
-      wayland.enable = true;
-    };
-    desktopManager.plasma5.enable = true;
-    layout = "us";
-    xkbVariant = "";
-  };
-
-  security.sudo.enable = false;
-  security.doas = {
-    enable = true;
-    extraRules = [{
-      users = [ "xenom" ];
-      keepEnv = true;
-      persist = true;
-    }];
-  };
-
   environment.shells = with pkgs; [ zsh ];
   users.defaultUserShell = pkgs.zsh;
   programs.zsh.enable = true;
-
-  programs.hyprland = {
-    enable = true;
-    xwayland.enable = true;
-  };
-
-  services.dbus = {
-    enable = true;
-    packages = [ pkgs.dconf ];
-  };
-
-  programs.dconf.enable = true;
 
   services.fstrim.enable = lib.mkDefault true;
 
   # To install it globally
   environment.systemPackages = [
     pkgs.git
+    pkgs.ntfs3g
     inputs.home-manager.packages.${pkgs.system}.default
     (pkgs.writeScriptBin "sudo" ''exec doas "$@"'')
   ];
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-  system.stateVersion = "23.05";
+  system.stateVersion = "23.11";
 }

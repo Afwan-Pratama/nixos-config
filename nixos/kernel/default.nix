@@ -1,9 +1,7 @@
-{ config, lib, pkgs, ... } : {
-  
+{ config, lib, pkgs, ... }: {
+
   boot.kernelPackages = pkgs.linuxPackages_zen;
 
-  boot.extraModulePackages = with config.boot.kernelPackages; [
-    zenpower
-  ]
+  boot.extraModulePackages = with config.boot.kernelPackages; [ zenpower ];
 
 }

@@ -9,6 +9,6 @@
 
     withNodeJs = true;
 
-    extraPackages = with pkgs; [ stylua nixfmt ripgrep fd ];
+    extraPackages = with pkgs; [ prettierd stylua nixfmt ripgrep fd ];
   };
 }
