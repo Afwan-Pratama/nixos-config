@@ -17,6 +17,7 @@
     ./wofi
     ./stylix
     ./firefox
+    ./waybar
   ];
 
   nixpkgs = {

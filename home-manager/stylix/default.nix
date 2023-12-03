@@ -58,4 +58,9 @@
     };
   };
 
+  home.file.".config/hypr/hyprpaper.conf".text = "preload = "
+    + config.stylix.image + ''
+
+      wallpaper = HDMI-A-1,'' + config.stylix.image + "";
+
 }
