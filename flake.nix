@@ -17,6 +17,11 @@
     aagl.url = "github:ezKEa/aagl-gtk-on-nix";
     aagl.inputs.nixpkgs.follows = "nixpkgs";
 
+    cascade-simple = {
+      url = "github:Afwan-Pratama/cascade-simple";
+      flake = false;
+    };
+
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";

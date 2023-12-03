@@ -10,6 +10,7 @@
 
     ./alacritty
     ./cli
+    ./fnott
     ./git
     ./hyprland
     ./neovim
@@ -51,6 +52,7 @@
   # Add stuff for your user as you see fit:
   home.packages = with pkgs; [
     steam
+    thunderbird
     spotify
     cargo
     gcc13

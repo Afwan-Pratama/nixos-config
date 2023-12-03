@@ -1,6 +1,15 @@
 { config, pkgs, ... }: {
 
-  home.packages = with pkgs; [ owofetch btop eza bat ];
+  home.file."themes" = {
+    target = ".config/btop/themes";
+    source = (fetchTarball {
+      url =
+        "https://github.com/catppuccin/btop/releases/download/1.0.0/themes.tar.gz";
+      sha256 = "0nf4jd8k22kyp5bscxma48rdfpq4qr5cg6jigrlxq38cwk61wx97";
+    });
+  };
+
+  home.packages = with pkgs; [ owofetch eza bat ];
 
   programs.zsh = {
     enable = true;
@@ -37,6 +46,15 @@
   programs.starship = {
     enable = true;
     enableZshIntegration = true;
+  };
+
+  programs.btop = {
+    enable = true;
+    settings = {
+      theme_background = false;
+      vim_keys = true;
+      update_ms = 1000;
+    };
   };
 
 }

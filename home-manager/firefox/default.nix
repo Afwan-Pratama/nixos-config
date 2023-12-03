@@ -1,10 +1,19 @@
 { config, inputs, pkgs, ... }: {
 
+  home.file.".mozilla/firefox/xenom/chrome/cascade-simple".source =
+    inputs.cascade-simple;
+
   programs.firefox = {
     enable = true;
     profiles.xenom = {
 
-      settings = { font.name.serif.x-western = "Inter"; };
+      settings = {
+        "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+      };
+
+      userChrome = ''
+        @import "cascade-simple/userChrome.css"
+      '';
 
       search.engines = {
         "Nix Packages" = {

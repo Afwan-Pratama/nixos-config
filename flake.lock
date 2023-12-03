@@ -151,6 +151,22 @@
         "type": "github"
       }
     },
+    "cascade-simple": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1701610998,
+        "narHash": "sha256-hUuzVXpm4O4YpHBymyEwmhWmffPD6FJOzaAcqg+yq3I=",
+        "owner": "Afwan-Pratama",
+        "repo": "cascade-simple",
+        "rev": "def79661291fa260b53ebedeed852348970c7925",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Afwan-Pratama",
+        "repo": "cascade-simple",
+        "type": "github"
+      }
+    },
     "firefox-addons": {
       "inputs": {
         "flake-utils": "flake-utils",
@@ -333,6 +349,7 @@
     "root": {
       "inputs": {
         "aagl": "aagl",
+        "cascade-simple": "cascade-simple",
         "firefox-addons": "firefox-addons",
         "home-manager": "home-manager",
         "nix-index-database": "nix-index-database",
