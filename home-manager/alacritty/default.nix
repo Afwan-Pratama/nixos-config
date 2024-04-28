@@ -1,10 +1,24 @@
 { config, pkgs, ... }: {
 
+  # wayland.windowManager.hyprland.settings.bind = [
+  #   "$mod, Return, exec, alacritty"
+  #   "$mod SHIFT, C, exec, alacritty -e nvim"
+  #   "$mod SHIFT, B, exec, alacritty -e btm"
+  #   "$mod SHIFT, Y, exec, alacritty -e yazi"
+  # ];
+
+  services.sxhkd.keybindings = {
+    "super + Return" = "alacritty";
+    "super + shift + {c,b,y}" =
+      "{alacritty -e nvim,alacritty -e btop,alacritty -e yazi}";
+  };
+
   programs.alacritty = {
     enable = true;
     settings = {
       env = { TERM = "xterm-256color"; };
       window = {
+        opacity = 0.95;
         dimensions = {
           columns = 82;
           lines = 25;
@@ -13,14 +27,11 @@
           x = 6;
           y = 6;
         };
-        dinamic_padding = false;
-        opacity = 0.9;
         title = "Alacritty";
         class = {
           instance = "Alacritty";
           general = "Alacritty";
         };
-        scrolling = { history = 5000; };
       };
       font = {
         normal = {
@@ -45,8 +56,8 @@
           y = 0;
         };
       };
-      draw_bold_text_with_bright_colors = true;
       colors = {
+        draw_bold_text_with_bright_colors = true;
         primary = {
           background = "#1E1E2E"; # base
           foreground = "#CDD6F4"; # text
@@ -72,10 +83,6 @@
           focused_match = {
             foreground = "#1E1E2E"; # base
             background = "#A6E3A1"; # green
-          };
-          footer_bar = {
-            foreground = "#1E1E2E"; # base
-            background = "#A6ADC8"; # subtext0
           };
         };
         # Keyboard regex hints

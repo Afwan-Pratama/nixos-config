@@ -13,9 +13,9 @@
     };
     low = {
       background = config.lib.stylix.colors.base00 + "e6";
-      title-color = config.lib.stylix.colors.base03 + "ff";
-      summary-color = config.lib.stylix.colors.base03 + "ff";
-      body-color = config.lib.stylix.colors.base03 + "ff";
+      title-color = config.lib.stylix.colors.base05 + "ff";
+      summary-color = config.lib.stylix.colors.base05 + "ff";
+      body-color = config.lib.stylix.colors.base05 + "ff";
       idle-timeout = 150;
       max-timeout = 30;
       default-timeout = 8;

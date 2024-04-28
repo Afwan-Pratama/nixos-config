@@ -11,6 +11,7 @@
     ./amd
     ./network
     ./fonts
+    ./grub
     ./sound
     ./users
     ./kernel
@@ -62,14 +63,12 @@
     experimental-features = "nix-command flakes";
     # Deduplicate and optimize nix store
     auto-optimise-store = true;
-
+    substituters = [ "https://hyprland.cachix.org" ];
+    trusted-public-keys =
+      [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
   };
 
   # FIXME: Add the rest of your current configuration
-
-  # TODO: This is just an example, be sure to use whatever bootloader you prefer
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
 
   time.timeZone = "Asia/Jakarta";
 
@@ -88,19 +87,51 @@
     LC_TIME = "en_US.UTF-8";
   };
 
+  # Default User Shell
   environment.shells = with pkgs; [ zsh ];
   users.defaultUserShell = pkgs.zsh;
   programs.zsh.enable = true;
 
+  # Enable Fstrim Service for SSD Storage
   services.fstrim.enable = lib.mkDefault true;
+
+  # Enable GVFS Service For Enabling Transfering files Android via USB
+  services.gvfs.enable = true;
+
+  # Enable Waydroid (Android Container)
+  virtualisation.waydroid.enable = true;
+
+  # Enable flatpak
+  services.flatpak.enable = true;
+
+  # Nix Helpers
+  programs.nh = {
+    enable = true;
+    clean.enable = true;
+    clean.extraArgs = "--keep-since 4 --keep 4 --dry";
+    flake = "/home/xenom/Documents/Git/nixos-config";
+  };
 
   # To install it globally
   environment.systemPackages = [
     pkgs.git
     pkgs.ntfs3g
+    pkgs.nix-output-monitor
+    pkgs.nvd
     inputs.home-manager.packages.${pkgs.system}.default
     (pkgs.writeScriptBin "sudo" ''exec doas "$@"'')
   ];
+
+  # environment.sessionVariables = {
+  #   MESA_VK_VERSION_OVERRIDE = "1.3";
+  #   NOUVEAU_USE_ZINK = "1";
+  # };
+
+  # Enable AutoUpgrade When Switching to a New Generations
+  system.autoUpgrade = {
+    enable = true;
+    allowReboot = true;
+  };
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "23.11";

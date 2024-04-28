@@ -28,6 +28,10 @@
                 name = "query";
                 value = "{searchTerms}";
               }
+              {
+                name = "channel";
+                value = "unstable";
+              }
             ];
           }];
 
@@ -48,7 +52,41 @@
             "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
           definedAliases = [ "@mn" ];
         };
-        "Search Brave" = {
+        "My Nixos - Home-Manager" = {
+          urls = [{
+            template = "https://mynixos.com/search";
+            params = [{
+              name = "q";
+              value = "home-manager+{searchTerms}";
+            }];
+          }];
+
+          icon =
+            "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+          definedAliases = [ "@mnh" ];
+        };
+        "My Nixos - Nixpkgs" = {
+          urls = [{
+            template = "https://mynixos.com/search";
+            params = [{
+              name = "q";
+              value = "nixpkgs+{searchTerms}";
+            }];
+          }];
+
+          icon =
+            "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+          definedAliases = [ "@mnn" ];
+        };
+        "NixOS Wiki" = {
+          urls = [{
+            template = "https://nixos.wiki/index.php?search={searchTerms}";
+          }];
+          iconUpdateURL = "https://nixos.wiki/favicon.png";
+          updateInterval = 24 * 60 * 60 * 1000; # every day
+          definedAliases = [ "@nw" ];
+        };
+        "Brave Search" = {
           urls = [{
             template = "https://search.brave.com/search";
             params = [
@@ -62,13 +100,22 @@
               }
             ];
           }];
-          definedAliases = [ "@sb" ];
+          definedAliases = [ "@bs" ];
+          iconUpdateURL =
+            "https://brave.com/static-assets/images/brave-logo-sans-text.svg";
+          updateInterval = 24 * 60 * 60 * 1000; # every day
         };
+
+        "Bing".metaData.hidden = true;
+        "Wikipedia (en)".metaData.hidden = true;
+        "Google".metaData.hidden = true;
+        "Amazon.com".metaData.hidden = true;
 
       };
 
       search.force = true;
-      search.default = "Search Brave";
+      search.default = "Brave Search";
+      search.privateDefault = "Brave Search";
 
       extensions = with inputs.firefox-addons.packages."x86_64-linux"; [
         ublock-origin
@@ -76,8 +123,8 @@
         stylus
         vimium
         darkreader
-        sponsorblock
         keepassxc-browser
+        libredirect
       ];
 
     };

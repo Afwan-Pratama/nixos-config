@@ -1,16 +1,18 @@
 { inputs, lib, config, pkgs, ... }: {
 
   home.packages = with pkgs; [
-    networkmanagerapplet
-    mpvpaper
+    # mpvpaper
+    imv
     hyprpaper
     hyprshot
+    libnotify
+    qt6.qtwayland
+    libsForQt5.qt5.qtwayland
+    xwaylandvideobridge
   ];
 
   wayland.windowManager.hyprland = {
-    enable = true;
     xwayland.enable = true;
-    enableNvidiaPatches = true;
     settings = {
       general = {
         gaps_in = 7;
@@ -18,6 +20,7 @@
         border_size = 0;
         no_border_on_floating = true;
         layout = "master";
+        cursor_inactive_timeout = 15;
       };
       animations = {
         enabled = "yes";
@@ -40,15 +43,17 @@
 
       bind = [
         ## apps
-        "$mod, Return, exec, alacritty"
         "$mod SHIFT, F, exec, nautilus"
-        "$mod SHIFT, Return, exec, wofi --show drun -allow-images"
+        "$mod SHIFT, M, exec, g4music"
+        "$mod SHIFT, Return, exec, fuzzel"
+        # "$mod SHIFT, Return, exec, wofi --show drun -allow-images"
         "$mod SHIFT, S, exec, spotify"
         "$mod SHIFT, G, exec, steam"
         "$mod SHIFT, W, exec, firefox"
-        "$mod SHIFT, D, exec, webcord"
-        "$mod SHIFT, C, exec, alacritty -e nvim"
-        "$mod SHIFT, B, exec, alacritty -e btop"
+        "$mod SHIFT, D, exec, armcord"
+        "$mod SHIFT, E, exec, thunderbird"
+        "$mod SHIFT, T, exec, warp-terminal"
+        "$mod SHIFT, Q, exec, wlogout"
         ## playerctl
         "$mod SHIFT, up, exec, playerctl play-pause"
         "$mod SHIFT, left, exec, playerctl previous"
@@ -98,11 +103,11 @@
         "$mod, mouse_down, workspace, e+1"
         "$mod, mouse_up, workspace, e-1"
         ## Screenshot
-        "$mod, Print, exec, hyprshot -m output -o ~/Pictures/Screenshots"
+        "$mod, Print, exec, hyprshot -m output -c -o ~/Pictures/Screenshots"
         "$mod SHIFT, Print, exec, hyprshot -m window -o ~/Pictures/Screenshots"
         "$mod CTRL, Print, exec, hyprshot -m region -o ~/Pictures/Screenshots"
         ## Toggle Wallpaper
-        "$mod, w, exec, toggleWallpaper"
+        # "$mod, w, exec, toggleWallpaper"
         ## Game Mode
         "$mod, F1 , exec, gamemoderun1"
         "$mod, F2 , exec, gamemoderun2"
@@ -130,9 +135,8 @@
       ];
       exec-once = [
         "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
-        "waybar"
-        "nm-applet --indicator"
-        "toggleWallpaper"
+        "hyprpaper"
+        # "toggleWallpaper"
         "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
         "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
       ];
@@ -145,29 +149,39 @@
         new_is_master = true;
         mfact = 0.5;
       };
-      misc = { disable_hyprland_logo = true; };
+      misc = {
+        disable_splash_rendering = true;
+        disable_hyprland_logo = true;
+      };
       windowrulev2 = [
         "opacity 0.0 override 0.0 override,class:^(xwaylandvideobridge)$"
         "nofocus,class:^(xwaylandvideobridge)$"
         "noinitialfocus,class:^(xwaylandvideobridge)$"
-        "workspace 9 silent, class:^(Spotify)$"
       ];
       windowrule = [
         "workspace 2,^(firefox)$"
         "workspace 3,^(firefoxdeveloperedition)$"
+        "workspace 3,^(dev.warp.Warp)$"
         "workspace 4 silent,^(steam)$"
         "workspace 4,^(heroic)$"
         "workspace 4,^(moe.launcher.the-honkers-railway-launcher)$"
+        "workspace 4,^(Anime Games Launcher)$"
         "workspace 7,^(thunderbird)$"
-        "workspace 8 silent,^(WebCord)$"
+        "workspace 8 silent,^(ArmCord)$"
+        "workspace 9 silent,^(Spotify)$"
+        "workspace 9 silent,^(com.github.neithern.g4music)"
+
+        "tile,^(dev.warp.Warp)$"
+
+        "float,^(com.github.neithern.g4music)"
+        "float,^(Spotify)$"
         "float,^(org.gnome.Nautilus)$"
-        "float,^(gnome-disks)$"
         "float,^(pavucontrol)$"
         "float,^(moe.launcher.the-honkers-railway-launcher)$"
         "float,^(com.github.wwmm.easyeffects)$"
-        "float,^(Spotify)$"
         "float,^(imv)$"
         "float,^(org.keepassxc.KeePassXC)$"
+        "float,^(nm-connection-editor)$"
       ];
     };
   };

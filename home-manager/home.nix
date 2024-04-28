@@ -7,18 +7,39 @@
     # inputs.nix-colors.homeManagerModule
 
     # You can also split up your configuration and import pieces of it here:
-
-    ./alacritty
-    ./cli
-    ./fnott
-    ./git
+    # DE
+    # wayland-spesific
     ./hyprland
-    ./neovim
+    ./fuzzel
+    # ./fnott
+    # ./wofi
+    ./wlogout
+
+    ./bspwm
+
+    # Terminal 
+    ./foot
+    # ./alacritty
+
+    # Status Bar ( Choose One either ags or waybar+dunst)
+
+    # ./waybar
+    # ./dunst
+
+    # or
+
+    ./ags
+
+    ./cli
+    ./git
+    ./games
+    ./nixvim
+    # ./neovim
     ./scripts
-    ./wofi
     ./stylix
     ./firefox
-    ./waybar
+    ./xdg
+    ./pkgs/warp-terminal.nix
   ];
 
   nixpkgs = {
@@ -40,6 +61,8 @@
       allowUnfree = true;
       # Workaround for https://github.com/nix-community/home-manager/issues/2942
       allowUnfreePredicate = _: true;
+
+      permittedInsecurePackages = [ "nix-2.16.2" ];
     };
   };
 
@@ -51,27 +74,46 @@
 
   # Add stuff for your user as you see fit:
   home.packages = with pkgs; [
-    steam
     thunderbird
     spotify
-    cargo
-    gcc13
-    wget
-    curl
-    unzip
     easyeffects
     keepassxc
     pavucontrol
     playerctl
-    webcord-vencord
+    armcord
+    bun
+    gimp
+    polkit_gnome
     gnome.nautilus
-    gnome.gnome-disk-utility
+    universal-android-debloater
+    android-tools
+    nurl
+    brave
+    hyper
+    g4music
+    qbittorrent
+    zathura
+    nvd
+    nix-output-monitor
   ];
 
-  # Enable home-manager and git
+  # Enable home-manager
   programs.home-manager.enable = true;
 
+  # Enable Gnome-Keyring
+  services.gnome-keyring.enable = true;
+
+  # Enable Easy-Effects Service
   services.easyeffects.enable = true;
+
+  # Enable Network Manager Applet on Tray
+  services.network-manager-applet.enable = true;
+
+  # Enable Syncthing Service
+  services.syncthing = {
+    enable = true;
+    tray.enable = false;
+  };
 
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";

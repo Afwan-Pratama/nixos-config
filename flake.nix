@@ -6,36 +6,44 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     # Home manager
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
-    # TODO: Add any other flake you might need
-    # hardware.url = "github:nixos/nixos-hardware";
-
-    # hyprland.url = "github:hyprwm/Hyprland";
-
-    aagl.url = "github:ezKEa/aagl-gtk-on-nix";
-    aagl.inputs.nixpkgs.follows = "nixpkgs";
-
+    # Ags (Status Bar)
+    ags.url = "github:Aylur/ags";
+    # Custom CSS firefox "cascade"
     cascade-simple = {
       url = "github:Afwan-Pratama/cascade-simple";
       flake = false;
     };
-
+    # Add-Ons Firefox 
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    nix-index-database.url = "github:Mic92/nix-index-database";
-    nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
-
+    # Hyprland
+    hyprland.url = "github:hyprwm/Hyprland";
+    # nix-locate
+    nix-index-database = {
+      url = "github:Mic92/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    # Nixvim (Neovim Distro For NixOS)
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    # Stylix (Styling Environment For NixOS)
     stylix.url = "github:danth/stylix";
+    # Walker (Application Runner)
+    walker.url = "github:abenz1267/walker";
 
   };
 
-  outputs = { self, nixpkgs, home-manager, aagl, nix-index-database, stylix, ...
-    }@inputs:
+  outputs = { self, nixpkgs, home-manager, nix-index-database, nixvim, stylix
+    , hyprland, ... }@inputs:
     let inherit (self) outputs;
     in {
       # NixOS configuration entrypoint
@@ -45,14 +53,7 @@
         nixos = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
           # > Our main nixos configuration file <
-          modules = [
-            ./nixos/configuration.nix
-            {
-              imports = [ aagl.nixosModules.default ];
-              nix.settings = aagl.nixConfig;
-              programs.honkers-railway-launcher.enable = true;
-            }
-          ];
+          modules = [ ./nixos/configuration.nix ];
         };
       };
 
@@ -67,8 +68,11 @@
           # > Our main home-manager configuration file <
           modules = [
             ./home-manager/home.nix
+            nixvim.homeManagerModules.nixvim
             nix-index-database.hmModules.nix-index
             stylix.homeManagerModules.stylix
+            hyprland.homeManagerModules.default
+            { wayland.windowManager.hyprland.enable = true; }
           ];
         };
       };

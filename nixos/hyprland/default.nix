@@ -1,13 +1,13 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, inputs, ... }: {
 
-  environment.systemPackages = with pkgs; [ polkit_gnome libva ];
+  environment.systemPackages = with pkgs; [ libva ];
 
   services.udisks2.enable = true;
 
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
-    enableNvidiaPatches = true;
+    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
   };
 
   services.dbus = {
