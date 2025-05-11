@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
 
   services.displayManager.sddm = {
     enable = true;
@@ -15,8 +16,6 @@
   };
 
   catppuccin = {
-    grub.enable = true;
-    plymouth.enable = true;
     sddm.enable = true;
   };
 

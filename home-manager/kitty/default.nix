@@ -25,12 +25,10 @@
     shellIntegration.enableZshIntegration = true;
     font = {
       name = "Fira Code Nerd Font";
-      size = 10.2;
     };
     settings = {
       cursor_shape = "beam";
       window_padding_width = 10;
-      background_opacity = "0.9";
       enable_audio_bell = "no";
     };
   };

@@ -66,6 +66,7 @@
           modules = [
             ./nixos/configuration.nix
             catppuccin.nixosModules.catppuccin
+            stylix.nixosModules.stylix
             {
               imports = [ aagl.nixosModules.default ];
               nix.settings = aagl.nixConfig;

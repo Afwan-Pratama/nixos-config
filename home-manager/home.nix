@@ -39,7 +39,7 @@
 
     ./multimedia
     ./scripts
-    ./themes
+    ../themes/hm.nix
     ./xdg
 
   ];

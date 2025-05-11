@@ -64,8 +64,8 @@
         # withNodeJs = true;
         theme = {
           enable = true;
-          name = "catppuccin";
-          style = "mocha";
+          name = "gruvbox";
+          style = "dark";
           transparent = true;
         };
         statusline.lualine = {
@@ -283,7 +283,6 @@
         languages = {
           # enableExtraDiagnostics = true;
           enableFormat = true;
-          enableLSP = true;
           enableTreesitter = true;
           astro.enable = true;
           css.enable = true;
@@ -296,6 +295,7 @@
           };
         };
         lsp = {
+          enable = true;
           formatOnSave = true;
           trouble.enable = true;
           lspkind.enable = true;
