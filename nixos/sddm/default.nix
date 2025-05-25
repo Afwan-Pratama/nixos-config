@@ -15,8 +15,4 @@
     };
   };
 
-  catppuccin = {
-    sddm.enable = true;
-  };
-
 }

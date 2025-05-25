@@ -21,8 +21,6 @@
     };
     # Ags (Status Bar)
     ags.url = "github:Aylur/ags";
-    # Catppuccin for NIX
-    catppuccin.url = "github:catppuccin/nix";
     # Hyprland
     hyprland.url = "git+https://github.com/hyprwm/Hyprland";
     # Stylix (Styling Environment For NixOS)
@@ -36,6 +34,10 @@
     };
     # Yet Another Neovim Framework for Nix
     nvf.url = "github:notashelf/nvf";
+    # Discord + Vencord on Nix Flakes
+    nixcord = {
+      url = "github:kaylorben/nixcord";
+    };
   };
 
   outputs =
@@ -47,7 +49,6 @@
       nvf,
       stylix,
       hyprland,
-      catppuccin,
       spicetify-nix,
       zen-browser,
       ...
@@ -65,7 +66,6 @@
           # > Our main nixos configuration file <
           modules = [
             ./nixos/configuration.nix
-            catppuccin.nixosModules.catppuccin
             stylix.nixosModules.stylix
             {
               imports = [ aagl.nixosModules.default ];
@@ -88,8 +88,7 @@
           modules = [
             ./home-manager/home.nix
             nvf.homeManagerModules.default
-            catppuccin.homeModules.catppuccin
-            stylix.homeManagerModules.stylix
+            stylix.homeModules.stylix
             hyprland.homeManagerModules.default
             spicetify-nix.homeManagerModules.default
             {

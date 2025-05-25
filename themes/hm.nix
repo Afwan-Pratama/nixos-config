@@ -1,69 +1,58 @@
-{ pkgs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+let
+
+  template-userChrome = import ./template-zen-user-chrome.nix {
+    inherit (config.lib.stylix) colors;
+  };
+
+  template-userContent = import ./template-zen-user-content.nix {
+    inherit (config.lib.stylix) colors;
+  };
+
+  template-Heroic = import ./template-heroic.nix {
+    inherit (config.lib.stylix) colors;
+  };
+
+  kvantumPackage =
+    let
+      kvconfig = config.lib.stylix.colors {
+        template = ./kvconfig.mustache;
+        extension = ".kvconfig";
+      };
+      svg = config.lib.stylix.colors {
+        template = ./kvantum.svg.mustache;
+        extension = ".svg";
+      };
+    in
+    pkgs.runCommandLocal "base16-kvantum" { } ''
+      directory="$out/share/Kvantum/Base16Kvantum"
+      mkdir --parents "$directory"
+      cp ${kvconfig} "$directory/Base16Kvantum.kvconfig"
+      cp ${svg} "$directory/Base16Kvantum.svg"
+    '';
+in
 {
 
-  home.packages = with pkgs; [
-    libsForQt5.qtstyleplugin-kvantum
-    kdePackages.qtstyleplugin-kvantum
-    libsForQt5.qt5ct
-    kdePackages.qt6ct
+  home.packages = [
+    kvantumPackage
   ];
 
-  catppuccin = {
-    accent = "blue";
-    flavor = "mocha";
-    cursors = {
-      enable = true;
-      accent = "dark";
-    };
-    gtk = {
-      icon = {
-        enable = true;
-        accent = "blue";
-      };
-    };
-    zsh-syntax-highlighting.enable = true;
-    imv.enable = true;
-    wlogout = {
-      enable = true;
-      extraStyle = ''
-        button { 
-            border-radius: 10px;
-            margin: 20px;
-        }
-
-        #lock {
-            background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/lock.png"));
-        }
-
-        #logout {
-            background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/logout.png"));
-        }
-
-        #suspend {
-            background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/suspend.png"));
-        }
-
-        #hibernate {
-            background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/hibernate.png"));
-        }
-
-        #shutdown {
-            background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/shutdown.png"));
-        }
-
-        #reboot {
-            background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/reboot.png"));
-        }    
-      '';
-    };
-    kvantum = {
-      enable = true;
-      accent = "blue";
-      apply = true;
-    };
+  home.pointerCursor = {
+    enable = true;
+    gtk.enable = true;
+    name = "Capitaine Cursors";
+    size = 24;
+    package = pkgs.capitaine-cursors-themed;
   };
 
   stylix = {
+
+    enable = true;
 
     autoEnable = false;
 
@@ -72,7 +61,7 @@
 
     polarity = "dark";
 
-    base16Scheme = ./gruvbox-dark-medium.yaml;
+    base16Scheme = ./kanagawa.yaml;
 
     fonts = {
       serif = {
@@ -98,30 +87,43 @@
       };
     };
 
+    iconTheme = {
+      enable = true;
+      dark = "Kanagawa";
+      package = pkgs.kanagawa-icon-theme;
+    };
+
     opacity = {
-      terminal = 0.9;
-      desktop = 0.9;
-      applications = 0.9;
+      terminal = 0.95;
+      desktop = 0.95;
+      applications = 0.95;
       popups = 0.95;
     };
 
     targets = {
 
-      bat.enable = true;
-      vesktop.enable = true;
-      hyprlock.enable = true;
       nixos-icons.enable = true;
       gtk.enable = true;
       mpv.enable = true;
-      mangohud.enable = true;
       gedit.enable = true;
       kitty.enable = true;
+      starship.enable = true;
+      fuzzel.enable = true;
       yazi.enable = true;
+      btop.enable = true;
+      bat.enable = true;
+      hyprlock.enable = true;
+      nixcord.enable = true;
+      # vesktop.enable = true;
+      nvf = {
+        enable = true;
+        transparentBackground = true;
+      };
+      hyprpaper.enable = true;
+      hyprland.enable = true;
+      mangohud.enable = true;
       zathura.enable = true;
       zed.enable = true;
-      starship.enable = true;
-      btop.enable = true;
-      fuzzel.enable = true;
 
     };
 
@@ -130,7 +132,39 @@
   qt = {
     enable = true;
     style.name = "kvantum";
-    platformTheme.name = "kvantum";
+    platformTheme.name = "qtct";
   };
+
+  xdg.configFile =
+    let
+      qtctConf = with config.stylix; ''
+        [Appearance]
+        style="kvantum"
+        icon_theme=${iconTheme.dark}
+        [Fonts]
+        fixed="${fonts.sansSerif.name}, ${builtins.toString fonts.sizes.applications},-1,5,25,0,0,0,0,0,Regular"
+        general="${fonts.sansSerif.name}, ${builtins.toString fonts.sizes.applications},-1,5,57,0,0,0,0,0,Regular"
+      '';
+    in
+    lib.mkMerge [
+      ({
+        "Kvantum/kvantum.kvconfig".source = (pkgs.formats.ini { }).generate "kvantum.kvconfig" {
+          General.theme = "Base16Kvantum";
+        };
+
+        "Kvantum/Base16Kvantum".source = "${kvantumPackage}/share/Kvantum/Base16Kvantum";
+      })
+
+      ({
+        "qt5ct/qt5ct.conf".text = qtctConf;
+        "qt6ct/qt6ct.conf".text = qtctConf;
+      })
+    ];
+
+  home.file.".zen/wmzbsmev.Default Profile/chrome/userChrome.css".text = template-userChrome;
+
+  home.file.".zen/wmzbsmev.Default Profile/chrome/userContent.css".text = template-userContent;
+
+  home.file."Heroic/Themes/stylix.css".text = template-Heroic;
 
 }

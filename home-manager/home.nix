@@ -37,6 +37,7 @@
     # ./nixvim
     ./nvf
 
+    ./vesktop
     ./multimedia
     ./scripts
     ../themes/hm.nix
@@ -75,12 +76,8 @@
 
   # Add stuff for your user as you see fit:
   home.packages = with pkgs; [
-    mailspring
-    kdePackages.kwallet
-    keepassxc
-    vesktop
+    evolution
     bun
-    libsForQt5.polkit-kde-agent
     brave
     # libreoffice-fresh
     onlyoffice-bin_latest
@@ -91,7 +88,6 @@
     python3
     kdePackages.xwaylandvideobridge
     ladybird
-    ventoy
   ];
 
   programs.zed-editor = {

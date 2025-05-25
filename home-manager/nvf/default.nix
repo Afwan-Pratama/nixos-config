@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ lib, ... }:
 
 {
   imports = [
@@ -62,14 +62,9 @@
         };
         autopairs.nvim-autopairs.enable = true;
         # withNodeJs = true;
-        theme = {
-          enable = true;
-          name = "gruvbox";
-          style = "dark";
-          transparent = true;
-        };
         statusline.lualine = {
           enable = true;
+          theme = "base16";
           activeSection = {
             a = [
               ''
@@ -286,6 +281,7 @@
           enableTreesitter = true;
           astro.enable = true;
           css.enable = true;
+          yaml.enable = true;
           nix = {
             enable = true;
             format.type = "nixfmt";
@@ -317,6 +313,10 @@
           backup = false;
           scrolloff = 8;
           updatetime = 50;
+        };
+        mini = {
+          ai.enable = true;
+          surround.enable = true;
         };
         dashboard.startify = {
           enable = true;

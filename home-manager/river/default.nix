@@ -1,4 +1,9 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, ... }:
+{
+
+  home.packages = with pkgs; [
+    libsForQt5.polkit-kde-agent
+  ];
 
   programs.yambar.enable = true;
 
@@ -72,7 +77,11 @@
       rivertile -view-padding 10 -outer-padding 10 &
     '';
     settings = {
-      declare-mode = [ "locked" "normal" "passthrough" ];
+      declare-mode = [
+        "locked"
+        "normal"
+        "passthrough"
+      ];
       input = {
         pointer-foo-bar = {
           accel-profile = "flat";
@@ -101,10 +110,8 @@
           "Super+Shift Right" = "spawn 'playerctl next'";
           #screenshot
           "Super Print" = "spawn 'hyprshot -m output -c ~/Pictures/Screenshot'";
-          "Super+Shift Print" =
-            "spawn 'hyprshot -m window -o ~/Pictures/Screenshot'";
-          "Super+Control Print" =
-            "spawn 'hyprshot -m region -o ~/Pictures/Screenshot'";
+          "Super+Shift Print" = "spawn 'hyprshot -m window -o ~/Pictures/Screenshot'";
+          "Super+Control Print" = "spawn 'hyprshot -m region -o ~/Pictures/Screenshot'";
           #client
           "Super J" = "focus-view next";
           "Super K" = "focus-view previous";
@@ -117,7 +124,11 @@
       rule-add = {
         "-app-id" = {
           "'bar'" = "csd";
-          "'float*'" = { "-title" = { "'foo'" = "float"; }; };
+          "'float*'" = {
+            "-title" = {
+              "'foo'" = "float";
+            };
+          };
         };
       };
       set-cursor-warp = "on-output-change";

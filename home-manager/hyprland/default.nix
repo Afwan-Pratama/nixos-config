@@ -9,7 +9,6 @@
   home.packages = with pkgs; [
     imv
     hyprshot
-    hyprpolkitagent
     libnotify
     qt6.qtwayland
     libsForQt5.qt5.qtwayland
@@ -20,22 +19,40 @@
     enable = true;
     settings = {
       splash = false;
-      preload = [
-        "${config.stylix.image}"
-      ];
-      wallpaper = [
-        "HDMI-A-1,${config.stylix.image}"
-      ];
     };
   };
 
+  home.pointerCursor.hyprcursor = {
+    enable = true;
+    size = 24;
+  };
+
+  services.hyprpolkitagent.enable = true;
+
   programs.hyprlock = {
     enable = true;
-    settings.background = [
-      {
-        path = "${config.stylix.image}";
+    extraConfig = with config.lib.stylix.colors; ''
+      label {
+        monitor = 
+        text = $TIME12
+        color = rgb(${base05})
+        font_size = 90
+        font_family = ${config.stylix.fonts.sansSerif.name}
+        position = -30, 0
+        halign = right 
+        valign = top
       }
-    ];
+      label {
+        monitor =
+        text = cmd[update:43200000] date +"%A, %d %B %Y"
+        color = rgb(${base05})
+        font_size = 25
+        font_family = ${config.stylix.fonts.sansSerif.name}
+        position = -30, -150
+        halign = right 
+        valign = top
+      }
+    '';
   };
 
   wayland.windowManager.hyprland = {
@@ -90,7 +107,7 @@
         "$mod SHIFT, S, exec, spotify"
         "$mod SHIFT, G, exec, steam"
         "$mod SHIFT, W, exec, zen"
-        "$mod SHIFT, D, exec, vesktop"
+        "$mod SHIFT, D, exec, discord"
         "$mod SHIFT, E, exec, mailspring --password-store='kwallet6'"
         "$mod SHIFT, Q, exec, wlogout"
         "$mod SHIFT, P, exec, hyprlock"
@@ -178,7 +195,6 @@
       exec-once = [
         "hyprpaper"
         # "toggleWallpaper"
-        "${pkgs.hyprpolkitagent}/libexec/hyprpolkitagent"
         "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
         "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
       ];
@@ -210,14 +226,14 @@
         "workspace 4,class:heroic"
         "workspace 4,class:moe.launcher.the-honkers-railway-launcher"
         "workspace 7,class:Mailspring"
-        "workspace 8 silent,class:vesktop"
-        "workspace 9 silent,class:Spotify"
+        "workspace 8 silent,class:discord"
+        "workspace 9 silent,class:spotify"
         "workspace 9 silent,class:com.github.neithern.g4music"
 
         "float,class:org.gnome.FileRoller"
         "float,class:org.gnome.Nautilus"
         "float,class:com.github.neithern.g4music"
-        "float,class:Spotify"
+        "float,class:spotify"
         "float,class:org.pulseaudio.pavucontrol"
         "float,class:moe.launcher.the-honkers-railway-launcher"
         "float,class:com.github.wwmm.easyeffects"

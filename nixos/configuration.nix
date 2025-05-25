@@ -24,7 +24,10 @@
     ./kernel
     # ./nvidia
     ./users
-    ./sddm
+
+    # ./sddm
+    ./greetd
+
     ./security
     ./disks
     ./desktopManager/hyprland.nix
@@ -120,9 +123,6 @@
   # Enable GVFS Service For Enabling Transfering files Android via USB
   services.gvfs.enable = true;
 
-  # Enable Flatpak services
-  services.flatpak.enable = true;
-
   # Enable common container config files in /etc/containers
   virtualisation.containers.enable = true;
   virtualisation = {
@@ -161,7 +161,9 @@
   ];
 
   environment.sessionVariables = {
-    # NIXOS_OZONE_WL = "1";
+    NIXOS_OZONE_WL = "1";
+    QT_QPA_PLATFORMTHEME = "qt5ct";
+    XCURSOR_THEME = "Capitaine Cursors";
   };
 
   # Enable AutoUpgrade When Switching to a New Generations

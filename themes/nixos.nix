@@ -3,6 +3,8 @@
 
   stylix = {
 
+    enable = true;
+
     autoEnable = false;
 
     image = ./wallpaper.png;
@@ -10,7 +12,7 @@
 
     polarity = "dark";
 
-    base16Scheme = ./gruvbox-dark-medium.yaml;
+    base16Scheme = ./kanagawa.yaml;
 
     fonts = {
       serif = {
@@ -36,21 +38,26 @@
       };
     };
 
+    cursor = {
+      name = "Capitaine Cursors";
+      size = 24;
+      package = pkgs.capitaine-cursors-themed;
+    };
+
     opacity = {
-      terminal = 0.9;
-      desktop = 0.9;
-      applications = 0.9;
+      terminal = 0.95;
+      desktop = 0.95;
+      applications = 0.95;
       popups = 0.95;
     };
 
     targets = {
       chromium.enable = true;
-      grub = {
-        enable = true;
-        useWallpaper = true;
-      };
+      grub.enable = true;
       nixos-icons.enable = true;
       plymouth.enable = true;
+      gtk.enable = true;
+      regreet.enable = true;
     };
 
   };
